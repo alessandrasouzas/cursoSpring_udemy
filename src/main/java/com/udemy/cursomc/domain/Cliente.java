@@ -21,7 +21,7 @@ import com.udemy.cursomc.domain.enums.TipoCliente;
 public class Cliente implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -29,18 +29,21 @@ public class Cliente implements Serializable {
 	private String email;
 	private String cpf_OR_Cnpj;
 	private Integer tipo;
-	
+
 	@JsonManagedReference
-	@OneToMany(mappedBy= "cliente")
+	@OneToMany(mappedBy = "cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
-	
+
 	@ElementCollection
-	@CollectionTable(name="TELEFONE")
+	@CollectionTable(name = "TELEFONE")
 	private Set<String> telefones = new HashSet<>();
-	
-	public Cliente() {		
+
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido> pedidos = new ArrayList<>();
+
+	public Cliente() {
 	}
-	
+
 	public Cliente(Integer id, String nome, String email, String cpf_OR_Cnpj, TipoCliente tipo) {
 		super();
 		this.id = id;
@@ -57,7 +60,7 @@ public class Cliente implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public String getNome() {
 		return nome;
 	}
@@ -83,7 +86,7 @@ public class Cliente implements Serializable {
 	}
 
 	public TipoCliente getTipo() {
-		return TipoCliente.toEnum(tipo);				
+		return TipoCliente.toEnum(tipo);
 	}
 
 	public void setTipo(TipoCliente tipo) {
@@ -104,6 +107,14 @@ public class Cliente implements Serializable {
 
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 
 	@Override
@@ -130,9 +141,5 @@ public class Cliente implements Serializable {
 			return false;
 		return true;
 	}
-
-	
-	
-	
 
 }
